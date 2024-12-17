@@ -6,7 +6,7 @@ import {Routes, Route} from 'react-router-dom'
 
 const App = () => {
   return (
-    <div>
+    <div className='container mx-auto bg-[url("bg_img.png")] bg-cover bg-center p-10 flex items-center justify-center'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/upload' element={<Upload />} />
