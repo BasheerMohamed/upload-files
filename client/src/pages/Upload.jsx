@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Upload = () => {
   const [imageName, setImageName] = useState('');
@@ -19,6 +20,50 @@ const Upload = () => {
       setVideoName(file.name);
     }
   };
+
+  const uploadFile = async (type) => {
+    const data = new FormData();
+    data.append('file', type === 'image' ? imageName : videoName);
+    data.append('upload_preset', type === 'image' ? 'images_preset' : 'videos_preset');
+
+    try {
+      const cloudName = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
+      const resource_name = type === 'image' ? 'image' : 'video';
+      const api = `https://api.cloudinary.com/v1_1/${cloudName}/${resource_name}/upload`;
+
+      const res = await axios.post(api, data);
+      const {secure_url} = res.data;
+      console.log(secure_url);
+
+      return secure_url;
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleUpload = async (e) => {
+    try {
+
+      e.preventDefault();
+
+      //Upload image file
+      const imgUrl = await uploadFile('image');
+
+      //Upload image file
+      const videoUrl = await uploadFile('video');
+
+      //Send backend api request
+      // await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/video`, {imgUrl, videoUrl});
+
+      setImageName(null);
+      setVideoName(null);
+
+      console.log('Files uploaded successfully');
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className='lg:mt-48 flex flex-col items-center justify-center'>
@@ -65,7 +110,7 @@ const Upload = () => {
             )}
           </div>
         </div>
-        <button onClick={() => navigate('/secure-upload')} className='text-white mt-10 w-52 bg-pink-500 px-10 py-3 rounded'>Upload</button>
+        <button onClick={handleUpload} className='text-white mt-10 w-52 bg-pink-500 px-10 py-3 rounded'>Upload</button>
     </div>
   );
 }
