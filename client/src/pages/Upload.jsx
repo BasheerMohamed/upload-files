@@ -55,7 +55,6 @@ const Upload = () => {
     }
   };
   
-  
   const handleUpload = async (e) => {
     try {
       e.preventDefault();
@@ -88,7 +87,7 @@ const Upload = () => {
 
   return (
     <div className='lg:mt-48 flex flex-col items-center justify-center'>
-      <h2 className='text-center text-4xl font-medium'>Unauthenticate Upload</h2>
+      <h1 className='text-center text-4xl font-medium'>Upload files using <span className='text-pink-500'>Cloudinary Service</span> in MERN stack project</h1>
       <div className='flex flex-wrap justify-center items-start mt-10 gap-10'>
         <div className='flex flex-col justify-center items-center gap-4'>
           <h2 className='text-xl'>Image Upload</h2>
